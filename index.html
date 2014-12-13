@@ -18,7 +18,6 @@
       <header>
         <h1>Telecom Job Psychic</h1>
         <p>A repository for our Harvard CSCI E-109 2014 data science class project that focuses on predicting repair jobs for telecom providers</p>
-        <p class="view"><a href="https://github.com/dtraviglia/telecom-job-pyschic">View the Project on GitHub <small>dtraviglia/telecom-job-pyschic</small></a></p>
 
         <ul>
           <li><a href="https://github.com/dtraviglia/telecom-job-pyschic/zipball/master">Download <strong>ZIP File</strong></a></li>
@@ -47,7 +46,7 @@
           </ul>
           <div id="introduction">
             <h2>Introduction</h2>
-            <p> Telecom services, such as voice, data, and video services, are delivered on various telecommunication networks to subscribers’ homes and businesses. Failures and operating problems associated with the network and network equipment cause service problems in which some of them can be fixed remotely and others require dispatch of technicians to the site to repair and fix the problem(s). Managing the available resources and their capacity in executing the repair jobs is quite challenging because the daily volume of dispatch needs (jobs demand) is largely unpredictable due to several factors such as the characteristics of the network and network equipment, nature of repairs needed, regulations, weather, seasonality, and characteristics of the labor force (such as union membership, skills, culture); among others. On the other hand, if extra resources and capacity is secured, the cost to secure these resources in addition to unplanned overtime cost can be substantial. If a lack of resources and capacity exists, then broken promises and negative customer experiences occur which typically affects customer satisfaction. The ability to predict the jobs demand in advance for immediate and near short terms can provide substantial benefits in optimizing capacity, reducing network downtime and improving customer satisfaction.</p>
+            <p> Telecom services, such as voice, data and video services are delivered on various telecommunication networks to subscriber's homes and businesses. Failures and operating problems associated with the network and network equipment cause service problems in which some of them can be fixed remotely and others require dispatch of technicians to the site to repair and fix the problem(s). Managing the available resources and their capacity in executing the repair jobs is quite challenging because the daily volume of dispatch needs (jobs demand) is largely unpredictable due to several factors such as the characteristics of the network and network equipment, nature of repairs needed, regulations, weather, seasonality, and characteristics of the labor force (such as union membership, skills, culture); among others. On the other hand, if extra resources and capacity is secured, the cost to secure these resources in addition to unplanned overtime cost can be substantial. If a lack of resources and capacity exists, then broken promises and negative customer experiences occur which typically affects customer satisfaction. The ability to predict the jobs demand in advance for immediate and near short terms can provide substantial benefits in optimizing capacity, reducing network downtime and improving customer satisfaction.</p>
             <h3> Objectives </h3>
             <p> We sought to develop a statistical model to predict the daily and 21-day period demands for telecom repair services to help in optimizing repairs resources capacity, improve operational effectiveness, reduce overtime cost and improve customer services. </p><p>Our inital hypothesis is that the number of repair jobs is related to weather conditions plus seasonality or some other time related phenomena. This project will help us identify and develop a model for repair jobs based based on this idea. </p>
           </div>
@@ -113,7 +112,7 @@
             </figure>
           </div>
           <div id="features">
-            <h2>Feature Selecrtion</h2>
+            <h2>Feature Selection</h2>
             <p>Our findings included observing a repeated pattern in the number of repairs jobs within the week preceding any specific day. This pattern, where the jobs counts are higher during the first three days of the week (peak), taper down toward the weekend, and become lower within the weekend (valley) led to the creation of more features that we are calling 'jobs-days-lags' as input variables for modeling. Further, there were correlations not only for the weekdays versus weekends but also within the weekdays themselves so dummy variables for each day of the week were selected as input for the model development.</p>
             <p>Analysis of the holiday’s impact on the jobs also indicated a pattern of reduction during the day of the holiday and because we've seen a normal pattern of previous days jobs affecting the next days jobs, we're including an indicator for the day after the holiday. Binary variables for the holiday and the day after the holiday were created and selected for input as well. Finally, extensive correlation analysis of the weather variables showed that one of the categorical variables that include weather conditions is strongly correlated with the repairs jobs. This variable was also coded into dummy variables where the set is selected as input for consideration in the model development.</p>
             <p>We revisited our correlation analysis after exploring these categorical data and found parameters that would prove useful for linear regression modelling as can be seen in the next three charts.</p>
@@ -129,10 +128,15 @@
             <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/coeff_before.png">
             <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/coeff_after.png">
             <p>The parameters of the model that remain are day of the week, rain, holiday, day after holiday, and corejobs counts from the previous days. However it is not clear why only some of the corejobs from previous days have an effect but it could have something to do with how jobs stack up during the week and then taper off on the weekends.</p>
-
           </div>
           <div id="conclusions">
             <h2>Testing and Conclusions</h2>
+            <p>The finalized regression model is tested using the data from 9/28/2014 to 10/18/2014 to assess the model performance, establish the control chart, and structure the scoring process. The latter was divided into two parts: (1) scoring for the first 11 days, and (2) scoring for day 12 to day 21. The reason for the separate scoring is the availability of forecasted weather data for the model input. While the model prediction period is 21 days, only the first 11 days have forecasted weather data. As a result, an imputation was developed to supplement the forecasted weather data for the second period prediction. The imputation is specific to the rain variable because the final input variables included only rain from the set of weather data used during the model development process. Since rain is a binary variable (1,0), the expected value of the rain variable during the first 11-day period is used to impute the missing forecasted rain variable needed for the model in the days within the second 10-day period.</p>
+            <p>The model prediction was tested using the mean absolute pediction error (MAPE), which is the ratio of the mean absolute residuals during the 21-day predicted repairs jobs over the mean actual jobs during the same 21-day period. The business requirement for the model prediction accuracy requires a performance criterion of MAPE of less than or equal to 0.4. The linear regression developed in this project meets and exceeds the required MAPE level.</p>
+            <p>The following charts show the residual errors for both the training and testing data set. </p>
+            <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/residuals_before.png">
+            <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/residuals_after.png">
+            <p>
           </div>
       </section>
     </div>
