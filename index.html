@@ -25,20 +25,12 @@
           <li><a href="https://github.com/dtraviglia/telecom-job-pyschic/tarball/master">Download <strong>TAR Ball</strong></a></li>
           <li><a href="https://github.com/dtraviglia/telecom-job-pyschic">View On <strong>GitHub</strong></a></li>
         </ul>
-        <p class="view"><a href="#introduction">Introduction</p>
-        <p class="view"><a href="#dataset">Dataset Descriptions</p>
-        <p class="view"><a href="#eda">Exploratory Analysis</p>
-        <p class="view"><a href="#features">Feature Selection</p>
-        <p class="view"><a href="#modeling">Model Description</p>
-        <p class="view"><a href="#conclusions">Testing and Conclusions</p>
-
-        <h3>Authors</h3>
-        <ul style="list-style-type:disc">
-          <li>Dan Traviglia, CSCI E-109</li>
-          <li>Kaiss Alahmady, CSCI E-109</li>
-          <li>Prabhu Akula, CSCI E-109</li>
-          <li>Sundaresan Manoharan, CSCI E-109</li>
-        <ul>
+        <p class="view"><a href="#introduction">Introduction</a></p>
+        <p class="view"><a href="#dataset">Dataset Descriptions</a></p>
+        <p class="view"><a href="#eda">Exploratory Analysis</a></p>
+        <p class="view"><a href="#features">Feature Selection</a></p>
+        <p class="view"><a href="#modeling">Model Description</a></p>
+        <p class="view"><a href="#conclusions">Testing and Conclusions</a></p>
 
       </header>
       <section>
@@ -46,6 +38,13 @@
         <h1>
           <a id="predicting-telecommunication-repair-jobs-demand" class="anchor" href="#predicting-telecommunication-repair-jobs-demand" aria-hidden="true"><span class="octicon octicon-link"></span></a>Predicting Telecommunication Repair Jobs Demand Now</h1>
           <p>A repository for our data science class project that focuses on predicting repair jobs for telecom providers</p>
+          <h3>Authors</h3>
+          <ul style="list-style-type:disc">
+            <li>Dan Traviglia, CSCI E-109</li>
+            <li>Kaiss Alahmady, CSCI E-109</li>
+            <li>Prabhu Akula, CSCI E-109</li>
+            <li>Sundaresan Manoharan, CSCI E-109</li>
+          </ul>
           <div id="introduction">
             <h2>Introduction</h2>
             <p> Telecom services, such as voice, data, and video services, are delivered on various telecommunication networks to subscribers’ homes and businesses. Failures and operating problems associated with the network and network equipment cause service problems in which some of them can be fixed remotely and others require dispatch of technicians to the site to repair and fix the problem(s). Managing the available resources and their capacity in executing the repair jobs is quite challenging because the daily volume of dispatch needs (jobs demand) is largely unpredictable due to several factors such as the characteristics of the network and network equipment, nature of repairs needed, regulations, weather, seasonality, and characteristics of the labor force (such as union membership, skills, culture); among others. On the other hand, if extra resources and capacity is secured, the cost to secure these resources in addition to unplanned overtime cost can be substantial. If a lack of resources and capacity exists, then broken promises and negative customer experiences occur which typically affects customer satisfaction. The ability to predict the jobs demand in advance for immediate and near short terms can provide substantial benefits in optimizing capacity, reducing network downtime and improving customer satisfaction.</p>
@@ -75,13 +74,62 @@
               <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/boxplot_dist.png">
               <figcaption> The data above shows the distribution of our data. The repair jobs have a standard deviaiton that is more than half of the mean which makes it difficult to optimally plan resources.</figcaption>
             </figure>
-            <p style="clear:both;">
+            <figure>
+              <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/hist_dist.png">
+              <figcaption>There is a non-normal distribution of jobs.</figcaption>
+            </figure> 
+            <figure>
+              <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/weather_matrix.png">
+              <figcaption>There aren't any direct correlations between single weather measurements and job demand.</figcaption>
+            </figure>
+            <p>In addition to the weather measurements, a weather code is assigned to the conditions. These data are categorical and can be transformed to dummy variables so that their relationship to corejobs can be explored. The weather codes and their description are below.</p>
+            <ul>
+              <li>CLR : clear conditions</li>
+              <li>FOG : foggy</li>
+              <li>MC : mostly cloudy</li>
+              <li>PC : partly cloudy</li>
+              <li>R/S : rain/snow</li>
+              <li>RAIN : raining</li>
+              <li>SNOW : snowing</li>
+              <li>WIND : elevated wind gusts</li>
+            </ul>
+            <figure>
+              <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/wx_codes.png">
+              <figcaption>Weather codes show some separation of corejobs demand.</figcaption>
+            </figure>
+            <figure>
+              <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/weekday.png">
+              <figcaption>Day of the week also shows separation of corejobs demand.</figcaption>
+            </figure>
+            <p> Also included in the dataset is a categorization about type of holiday. The above chart shows separatation of corejobs number by type of major holiday. Holiday type appears to help separate repair jobs demand.  Holiday types can be broken down into: </p>
+            <ul>
+              <li>H = holiday (most federal holidays including patriot's day, columbus day, etc.)</li>
+              <li>M = major holiday (new year, july 4th, thanksgiving, christmas, etc.)</li>
+              <li>N = non-holiday</li>
+            </ul>
+            <figure>
+              <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/holiday.png">
+              <figcaption>And holiday type is another feature that could be used to model job demand.</figcaption>
+            </figure>
           </div>
           <div id="features">
             <h2>Feature Selecrtion</h2>
+            <p>Our findings included observing a repeated pattern in the number of repairs jobs within the week preceding any specific day. This pattern, where the jobs counts are higher during the first three days of the week (peak), taper down toward the weekend, and become lower within the weekend (valley) led to the creation of more features that we are calling 'jobs-days-lags' as input variables for modeling. Further, there were correlations not only for the weekdays versus weekends but also within the weekdays themselves so dummy variables for each day of the week were selected as input for the model development.</p>
+            <p>Analysis of the holiday’s impact on the jobs also indicated a pattern of reduction during the day of the holiday and because we've seen a normal pattern of previous days jobs affecting the next days jobs, we're including an indicator for the day after the holiday. Binary variables for the holiday and the day after the holiday were created and selected for input as well. Finally, extensive correlation analysis of the weather variables showed that one of the categorical variables that include weather conditions is strongly correlated with the repairs jobs. This variable was also coded into dummy variables where the set is selected as input for consideration in the model development.</p>
+            <p>We revisited our correlation analysis after exploring these categorical data and found parameters that would prove useful for linear regression modelling as can be seen in the next three charts.</p>
+            <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/wdhd_corr.png">
+            <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/wx_corr.png">
+            <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/lag_corr.png">
           </div>
           <div id="modeling">
             <h2>Model Description</h2>
+            <p>Two modeling approaches were attempted: Bayesian statistics and linear regression. The bayesian statistics did not yield any conclusive results, possibly because the data is not from a normal distribution so our efforts were focused on linear regression. Linear regression was selected because it is a better fit for the prediction problem at hand, provides opportunity to explain input drivers of the prediction to business (which is a business requirement) compared to a black box approach like neural networks, and provides manageable production implication for the model (see the note the model production deployment). Finally, the ability to use the modeling algorithm itself as a vehicle to better select the input variables was a critical consideration since the reducing the number of input variables for the model, as much as practically possible, is an important business requirement for deployment and productionalization.</p>
+            <p>The initial set of the input variables selected during the data exploration and features selection stages were employed in the linear regressions. Model optimization was performed throughout multiple steps of backward elimination where input variables are evaluated in the regression(s) and the ones that carry the least statistical significance were removed. The first step included the whole set of the initial input variables selected during the data exploration and features selection then a subsequent regression model step is exercised to remove the weakest variable from the initial set. A second step includes the whole initial set of variables minus the removed variable in the first step and likewise regression is used to remove the weakest input variables from the remaining set and so on. A total of ten steps were used to reach the final set of input variables for the final regression model. All variables elimination from the regressions was based on testing the hypothesis of no difference for the corresponding regression coefficients at the alpha level of 0.05.</p>
+            <p>The following charts show feature coefficients before and after elimination. </p>
+            <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/coeff_before.png">
+            <img src="https://raw.githubusercontent.com/dtraviglia/telecom-job-pyschic/gh-pages/images/coeff_after.png">
+            <p>The parameters of the model that remain are day of the week, rain, holiday, day after holiday, and corejobs counts from the previous days. However it is not clear why only some of the corejobs from previous days have an effect but it could have something to do with how jobs stack up during the week and then taper off on the weekends.</p>
+
           </div>
           <div id="conclusions">
             <h2>Testing and Conclusions</h2>
