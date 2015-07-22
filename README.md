@@ -12,7 +12,7 @@ This iPython notebook documents our Harvard CSCI E-109 2014 data science class p
 
 ## Documentation
 
-Please see our [Telecom-Job-Psychic](http://dtraviglia.github.io/telecom-job-pyschic/) for more information.  
+Please see our [Telecom-Job-Psychic](http://dtraviglia.github.io/telecom-job-psychic/) for more information.  
 
 ## Installation
 
